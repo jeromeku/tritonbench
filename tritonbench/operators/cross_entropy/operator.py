@@ -2,7 +2,6 @@ import argparse
 from typing import Callable, Generator, List, Optional, Tuple
 
 import torch
-
 from torch.nn import CrossEntropyLoss
 
 from tritonbench.utils.triton_op import (
@@ -24,7 +23,6 @@ class Operator(BenchmarkOperator):
     def __init__(
         self, tb_args: argparse.Namespace, extra_args: Optional[List[str]] = None
     ):
-        breakpoint()
         super().__init__(tb_args, extra_args)
         self.B = 8
         self.T = 2048

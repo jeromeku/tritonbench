@@ -23,7 +23,7 @@ import tabulate
 import torch
 import triton
 
-from tritonbench.components.do_bench import do_bench_wrapper, Latency
+from tritonbench.components.do_bench import Latency, do_bench_wrapper
 from tritonbench.components.ncu import ncu_analyzer, nsys_analyzer
 from tritonbench.utils.env_utils import apply_precision, set_env, set_random_seed
 from tritonbench.utils.input import input_cast
@@ -904,7 +904,6 @@ class BenchmarkOperator(metaclass=PostInitProcessor):
         from unittest import mock
 
         from triton.runtime import Autotuner
-
         from triton.runtime.jit import JITFunction
 
         original_run = Autotuner.run
@@ -1753,7 +1752,11 @@ class BenchmarkOperator(metaclass=PostInitProcessor):
             fn()
 
         if len(compiled_kernels) > 0:
-            ir_dir = self.get_temp_path("ir")
+            if self.tb_args.output_dir is None:
+                ir_dir = f"{self.name}/ir/{input_id}"
+            else:
+                ir_dir = f"{self.tb_args.output_dir}/{self.name}/ir/{input_id}"
+            ir_dir = Path(ir_dir)
             ir_dir.mkdir(parents=True, exist_ok=True)
             logger.info("Writing Triton IR to %s", ir_dir)
 
