@@ -107,7 +107,8 @@ def run(args: List[str] = []):
         ops = args.op.split(",")
     else:
         ops = list_operators_by_collection(args.op_collection)
-
+        print(f"ops: {ops}")
+        sys.exit(0)
     # Force isolation in subprocess if testing more than one op.
     if len(ops) >= 2:
         args.isolate = True
