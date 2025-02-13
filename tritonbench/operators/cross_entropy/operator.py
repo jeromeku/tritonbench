@@ -24,6 +24,7 @@ class Operator(BenchmarkOperator):
     def __init__(
         self, tb_args: argparse.Namespace, extra_args: Optional[List[str]] = None
     ):
+        breakpoint()
         super().__init__(tb_args, extra_args)
         self.B = 8
         self.T = 2048

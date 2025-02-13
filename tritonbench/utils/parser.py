@@ -1,11 +1,17 @@
 import argparse
+from pprint import pprint
 
 from tritonbench.utils.env_utils import AVAILABLE_PRECISIONS
-from tritonbench.utils.triton_op import DEFAULT_RUN_ITERS, DEFAULT_WARMUP, IS_FBCODE
+from tritonbench.utils.triton_op import (
+    DEFAULT_RUN_ITERS,
+    DEFAULT_WARMUP,
+    IS_FBCODE,
+    BenchmarkOperatorMetrics,
+)
 
 
 def get_parser(args=None):
-    parser = argparse.ArgumentParser(allow_abbrev=False)
+    parser = argparse.ArgumentParser(allow_abbrev=False, formatter_class=argparse.RawTextHelpFormatter)
     parser.add_argument(
         "--op",
         type=str,
@@ -89,10 +95,14 @@ def get_parser(args=None):
         action="store_true",
         help="Run in the CI mode.",
     )
+    all_metrics = BenchmarkOperatorMetrics.__dataclass_fields__.keys()
+    formatted_metrics = "\n".join(f"    {m}" for m in all_metrics)
     parser.add_argument(
         "--metrics",
         default=None,
-        help="Metrics to collect, split with comma. E.g., --metrics latency,tflops,speedup.",
+        help=f"""Metrics to collect, split with comma. E.g., --metrics latency,tflops,speedup.
+        Available metrics:
+{formatted_metrics}""",
     )
     parser.add_argument(
         "--metrics-gpu-backend",
